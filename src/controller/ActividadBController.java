@@ -89,6 +89,7 @@ public class ActividadBController implements Initializable{
 			if (listaPersonas.contains(p)== false) {
 				listaPersonas.add(p);
 				ventanaAlerta("I", "Persona añadida correctamente");
+				eliminarValores();
 			}else{
 				ventanaAlerta("E", "La persona ya existe");
 			}	
@@ -110,6 +111,7 @@ public class ActividadBController implements Initializable{
 		Integer nEdadEliminado = tblTabla.getSelectionModel().getSelectedItem().getEdad();
 		listaPersonas.remove(new Persona(sNombreEliminado, sApellidosEliminado, nEdadEliminado));
 		ventanaAlerta("I","Persona eliminada correctamente");
+		eliminarValores();
     }
 
 	/*
@@ -131,6 +133,7 @@ public class ActividadBController implements Initializable{
     			listaPersonas.remove(new Persona(sNombreEliminado, sApellidosEliminado, nEdadEliminado));
     			listaPersonas.add(p);
     			ventanaAlerta("I", "Persona modificada correctamente");
+    			eliminarValores();
     		}else {
     			ventanaAlerta("E", "Persona existente");
     		}
@@ -185,6 +188,13 @@ public class ActividadBController implements Initializable{
 		if (txtEdad.getText().isEmpty()) {camposNulos += "El campo apellidos es obligatorio";}
 		if (camposNulos!="") {throw new NullPointerException();}
 		if (Integer.parseInt(txtEdad.getText().toString()) < 1) {throw new NumberFormatException();}
+	}
+	
+	// Metodo para vaciar campos cada vez que insertamos, modificamos o eliminamos
+	void eliminarValores() {
+		txtNombre.clear();
+		txtApellidos.clear();
+		txtEdad.clear();
 	}
 }
 
