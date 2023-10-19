@@ -52,7 +52,9 @@ public class ActividadBController implements Initializable{
 	@FXML
 	private TextField txtNombre;
 	
+	// Variables de clase
 	private ObservableList<Persona> listaPersonas;
+	private String camposNulos = "";
 
 	/*
 	 * Método de inicialización
@@ -75,14 +77,10 @@ public class ActividadBController implements Initializable{
 	 */
 	@FXML
     void agregarPersona(ActionEvent event) {
-		String camposNulos = "";
+		camposNulos = "";
 		try {
 			// Controlar que los parametros se insertan correctamente
-			if (txtNombre.getText().equals("")) {camposNulos = "El campo nombre es obligatorio\n";}
-			if (txtApellidos.getText().equals("")) {camposNulos += "El campo apellidos es obligatorio\n";}
-			if (txtEdad.getText().isEmpty()) {camposNulos += "El campo apellidos es obligatorio";}
-			if (camposNulos!="") {throw new NullPointerException();}
-			if (Integer.parseInt(txtEdad.getText().toString()) < 1) {throw new NumberFormatException();}
+			comprobarValores();
 			// Crear persona
 			String nombre= txtNombre.getText();
 			String apellidos= txtApellidos.getText();
@@ -98,7 +96,7 @@ public class ActividadBController implements Initializable{
 		}catch(NullPointerException e){
 			ventanaAlerta("E", camposNulos);
 		}catch(NumberFormatException e) {
-			ventanaAlerta("E", "El valor de edad debe ser un número mayor que cero");
+			ventanaAlerta("E", "El valor de edad debe ser un número entero mayor que cero");
 		}
 		
     }
@@ -127,8 +125,10 @@ public class ActividadBController implements Initializable{
     }
 	
 	/*
-	 * Metodo auxiliar para mostrar alertas de tipo error o confirmación
+	 * METODOS AUXILIARES
 	 */
+    
+    // Metodo para mostrar alertas de tipo error o confirmación
 	void ventanaAlerta(String tipoAlerta, String mensaje) {
 		Alert alert = null;
 		switch (tipoAlerta) {
@@ -142,6 +142,14 @@ public class ActividadBController implements Initializable{
         alert.showAndWait();
 	}
 	
+	// Metodo para comprobar que los valores de los cuadro de texto son correctos
+	void comprobarValores() {
+		if (txtNombre.getText().equals("")) {camposNulos = "El campo nombre es obligatorio\n";}
+		if (txtApellidos.getText().equals("")) {camposNulos += "El campo apellidos es obligatorio\n";}
+		if (txtEdad.getText().isEmpty()) {camposNulos += "El campo apellidos es obligatorio";}
+		if (camposNulos!="") {throw new NullPointerException();}
+		if (Integer.parseInt(txtEdad.getText().toString()) < 1) {throw new NumberFormatException();}
+	}
 }
 
 	
