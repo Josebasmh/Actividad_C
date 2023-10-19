@@ -73,7 +73,6 @@ public class ActividadBController implements Initializable{
 		
 	/*
 	 * Método para agregar personas a la tabla.
-	 * Se controla que los campos no pueden ser nulos y que el campo edad sea un número mayor que 1.
 	 */
 	@FXML
     void agregarPersona(ActionEvent event) {
@@ -89,7 +88,7 @@ public class ActividadBController implements Initializable{
 			// Insertar persona, controlando que no exista
 			if (listaPersonas.contains(p)== false) {
 				listaPersonas.add(p);
-				ventanaAlerta("C", "Persona añadida correctamente");
+				ventanaAlerta("I", "Persona añadida correctamente");
 			}else{
 				ventanaAlerta("E", "La persona ya existe");
 			}	
@@ -101,16 +100,52 @@ public class ActividadBController implements Initializable{
 		
     }
 	
+	/*
+	 * Metodo para eliminar persona de tabla.
+	 */
 	@FXML
     void eliminarPersona(ActionEvent event) {
-
+		String sNombreEliminado = tblTabla.getSelectionModel().getSelectedItem().getNombre();
+		String sApellidosEliminado = tblTabla.getSelectionModel().getSelectedItem().getApellidos();
+		Integer nEdadEliminado = tblTabla.getSelectionModel().getSelectedItem().getEdad();
+		listaPersonas.remove(new Persona(sNombreEliminado, sApellidosEliminado, nEdadEliminado));
+		ventanaAlerta("I","Persona eliminada correctamente");
     }
 
+	/*
+	 * Método para Modificar persona selecionada de la tabla
+	 */
     @FXML
     void modificarPersona(ActionEvent event) {
-
+    	camposNulos="";
+    	try {
+    		// Comprobar que los datos introducidos son correctos
+    		comprobarValores();
+    		// Crear persona para comprobar que no esxiste
+    		Persona p = new Persona(txtNombre.getText(), txtApellidos.getText(), Integer.parseInt(txtEdad.getText()));
+    		if (!listaPersonas.contains(p)) {
+        		// Modificar persona
+    			String sNombreEliminado = tblTabla.getSelectionModel().getSelectedItem().getNombre();
+    			String sApellidosEliminado = tblTabla.getSelectionModel().getSelectedItem().getApellidos();
+    			Integer nEdadEliminado = tblTabla.getSelectionModel().getSelectedItem().getEdad();
+    			listaPersonas.remove(new Persona(sNombreEliminado, sApellidosEliminado, nEdadEliminado));
+    			listaPersonas.add(p);
+    			ventanaAlerta("I", "Persona modificada correctamente");
+    		}else {
+    			ventanaAlerta("E", "Persona existente");
+    		}
+    		
+    	}catch(NullPointerException e){
+    		ventanaAlerta("E", camposNulos);
+    	}catch(NumberFormatException e) {
+			ventanaAlerta("E", "El valor de edad debe ser un número entero mayor que cero");
+		}
+    	
     }
 
+    /*
+     * Metodo para cargar una persona en los campos de texto
+     */
     @FXML
     void seleccionarPersona(MouseEvent event) {
 
@@ -128,21 +163,22 @@ public class ActividadBController implements Initializable{
 	 * METODOS AUXILIARES
 	 */
     
-    // Metodo para mostrar alertas de tipo error o confirmación
+    // Metodo para mostrar alertas de tipo error o información
 	void ventanaAlerta(String tipoAlerta, String mensaje) {
 		Alert alert = null;
 		switch (tipoAlerta) {
 			case ("E"):
 				alert = new Alert(Alert.AlertType.ERROR);
 				break;
-			case ("C"):
-				alert = new Alert(Alert.AlertType.CONFIRMATION);
+			case ("I"):
+				alert = new Alert(Alert.AlertType.INFORMATION);
 		}
         alert.setContentText(mensaje);
         alert.showAndWait();
 	}
 	
-	// Metodo para comprobar que los valores de los cuadro de texto son correctos
+	// Metodo para comprobar que los valores de los cuadro de texto son correctos.
+	// Se controla que los campos no pueden ser nulos y que el campo edad sea un número mayor que 1.
 	void comprobarValores() {
 		if (txtNombre.getText().equals("")) {camposNulos = "El campo nombre es obligatorio\n";}
 		if (txtApellidos.getText().equals("")) {camposNulos += "El campo apellidos es obligatorio\n";}
