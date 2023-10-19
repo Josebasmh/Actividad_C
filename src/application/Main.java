@@ -1,26 +1,30 @@
 package application;
-	
+
+import java.io.IOException;
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
 
+public class Main extends Application{
 
-public class Main extends Application {
-	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
+		stage.setTitle("PERSONA"); 
+		FlowPane root;
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
+			root = (FlowPane)FXMLLoader.load(getClass().getResource("/fxml/Persona.fxml"));
+			Scene scene = new Scene(root,820,620); 
+			stage.setScene(scene);
+			stage.setMinHeight(620);
+			stage.setMinWidth(820);
+			stage.show();
+		} catch (IOException e) {
+			System.out.println("La ventana no se abrió correctamente.");
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
+		public static void main(String[] args) {
+			launch(args);
+		}
 }
