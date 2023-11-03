@@ -2,16 +2,13 @@ package controller;
 
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -56,8 +53,9 @@ public class ActividadBController implements Initializable{
 	private ObservableList<Persona> listaPersonas;
 	private String camposNulos = "";
 
-	/*
-	 * Método de inicialización
+	/**
+	 * Al iniciar la ventana, se enlazan las columnas con un arrayList que guarda las
+	 * personas registradas.
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -71,8 +69,9 @@ public class ActividadBController implements Initializable{
 		tblTabla.setItems(listaPersonas);		
 	}
 		
-	/*
+	/**
 	 * Método para agregar personas a la tabla.
+	 * @param event
 	 */
 	@FXML
     void agregarPersona(ActionEvent event) {
@@ -101,8 +100,9 @@ public class ActividadBController implements Initializable{
 		
     }
 	
-	/*
+	/**
 	 * Metodo para eliminar persona de tabla.
+	 * @param event
 	 */
 	@FXML
     void eliminarPersona(ActionEvent event) {
@@ -114,8 +114,9 @@ public class ActividadBController implements Initializable{
 		eliminarValores();
     }
 
-	/*
-	 * Método para Modificar persona selecionada de la tabla
+	/**
+	 * Método para Modificar persona selecionada de la tabla.
+	 * @param event
 	 */
     @FXML
     void modificarPersona(ActionEvent event) {
@@ -146,8 +147,9 @@ public class ActividadBController implements Initializable{
     	
     }
 
-    /*
-     * Metodo para cargar una persona en los campos de texto
+    /**
+     * Metodo para cargar una persona en los campos de texto.
+     * @param event
      */
     @FXML
     void seleccionarPersona(MouseEvent event) {
@@ -166,7 +168,11 @@ public class ActividadBController implements Initializable{
 	 * METODOS AUXILIARES
 	 */
     
-    // Metodo para mostrar alertas de tipo error o información
+    /**
+     * Metodo para mostrar alertas de tipo error o información.
+     * @param tipoAlerta
+     * @param mensaje
+     */
 	void ventanaAlerta(String tipoAlerta, String mensaje) {
 		Alert alert = null;
 		switch (tipoAlerta) {
@@ -180,8 +186,10 @@ public class ActividadBController implements Initializable{
         alert.showAndWait();
 	}
 	
-	// Metodo para comprobar que los valores de los cuadro de texto son correctos.
-	// Se controla que los campos no pueden ser nulos y que el campo edad sea un número mayor que 1.
+	/**
+	 * Metodo para comprobar que los valores de los cuadro de texto son correctos.
+	 * Se controla que los campos no pueden ser nulos y que el campo edad sea un número mayor que 1.
+	 */
 	void comprobarValores() {
 		if (txtNombre.getText().equals("")) {camposNulos = "El campo nombre es obligatorio\n";}
 		if (txtApellidos.getText().equals("")) {camposNulos += "El campo apellidos es obligatorio\n";}
@@ -190,7 +198,9 @@ public class ActividadBController implements Initializable{
 		if (Integer.parseInt(txtEdad.getText().toString()) < 1) {throw new NumberFormatException();}
 	}
 	
-	// Metodo para vaciar campos cada vez que insertamos, modificamos o eliminamos
+	/**
+	 * Metodo para vaciar campos cada vez que insertamos, modificamos o eliminamos.
+	 */
 	void eliminarValores() {
 		txtNombre.clear();
 		txtApellidos.clear();
